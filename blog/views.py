@@ -1,14 +1,10 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from rest_framework import serializers
-from rest_framework.response import Response
-from django.contrib.auth.decorators import login_required
 
-from .forms import PostForm, CommentForm
+from .forms.posts import PostForm, CommentForm
 from .models import Post
-
-
-# Create your views here.
 
 
 def basic(request):
@@ -71,6 +67,7 @@ def post_edit(request, pk):
     else:
         form = PostForm(instance=post)
     return render(request, 'blog/post_edit.html', {'form': form})
+
 
 @login_required(login_url='login')
 def post_delete(request, pk):

@@ -1,3 +1,8 @@
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from django.views import View
+
+from blog.forms.auth import LoginUserForm
 from blog.forms.auth import RegistrationUserForm
 
 
@@ -10,12 +15,6 @@ def registration(request):
     else:
         form = RegistrationUserForm()
     return render(request, 'blog/registration.html', {'form': form})
-
-
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-from django.views import View
-from blog.forms.auth import LoginUserForm  # Ensure this is the correct path to your form
 
 
 class LoginUserView(View):

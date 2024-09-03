@@ -1,5 +1,5 @@
-from django.forms import Form, fields, widgets
 from django.contrib.auth.models import User
+from django.forms import Form, fields, widgets
 
 
 class RegistrationUserForm(Form):

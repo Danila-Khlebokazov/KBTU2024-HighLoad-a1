@@ -1,5 +1,5 @@
-from django.urls import path
 from django.contrib.auth import views as auth_views
+from django.urls import path
 
 from .services.auth import RegisterUserView
 from .views import basic, post_list, post_detail, post_create, post_edit, post_delete
