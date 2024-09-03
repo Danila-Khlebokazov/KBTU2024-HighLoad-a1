@@ -1,0 +1,134 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}
+    {{ block.super }} | Blog List
+{% endblock %}
+
+{% block extrahead %}
+<style>
+    /* Center all content */
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .post {
+        background-color: #ffffff;
+        margin-bottom: 20px;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+
+    .post h2 {
+        margin-bottom: 10px;
+        font-size: 22px;
+        color: #343a40;
+    }
+
+    .post-meta {
+        font-size: 14px;
+        color: #6c757d;
+        margin-bottom: 10px;
+    }
+
+    .post-content {
+        font-size: 16px;
+        color: #495057;
+        margin-bottom: 15px;
+    }
+
+    .post-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .post-buttons {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        font-size: 14px;
+    }
+
+    .detail-button {
+        background-color: #007bff;
+    }
+
+    .detail-button:hover {
+        background-color: #0056b3;
+    }
+
+    .edit-button {
+        background-color: #ffc107;
+    }
+
+    .edit-button:hover {
+        background-color: #e0a800;
+    }
+
+    .delete-button {
+        background-color: #dc3545;
+    }
+
+    .delete-button:hover {
+        background-color: #c82333;
+    }
+
+    .new-post-button {
+        display: inline-block;
+        padding: 10px 20px;
+        margin-top: 20px;
+        color: #ffffff;
+        background-color: #28a745;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .new-post-button:hover {
+        background-color: #218838;
+    }
+
+    .no-posts {
+        color: #6c757d;
+        font-size: 18px;
+        margin-top: 20px;
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% for post in posts %}
+    <div class="post">
+        <h2>{{ post.title }}</h2>
+        <p class="post-meta">By <strong>{{ post.author.username }}</strong> on {{ post.created_at|date:"F j, Y" }}</p>
+        <p class="post-content">{{ post.content|truncatewords:30 }}</p>
+        <div class="post-actions">
+            <div class="post-buttons">
+                <a href="{% url 'post_detail' post.id %}" class="btn detail-button">Read More</a>
+                {% if post.author == user %}
+                <a href="{% url 'post_edit' post.id %}" class="btn edit-button">Edit</a>
+                <a href="{% url 'post_delete' post.id %}" class="btn delete-button">Delete</a>
+                {% endif %}
+            </div>
+            <span>{{ post.comment_set.count }} comments</span>
+        </div>
+    </div>
+    {% empty %}
+    <p class="no-posts">No posts available.</p>
+    {% endfor %}
+    <a href="{% url 'post_create' %}" class="new-post-button">Write a post</a>
+</div>
+{% endblock %}
