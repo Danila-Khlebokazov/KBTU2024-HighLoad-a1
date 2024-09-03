@@ -6,7 +6,7 @@ from .views import basic, post_list, post_detail, post_create, post_edit, post_d
 
 urlpatterns = [
     path("basic", basic),
-    path("posts/", post_list, name="post_list"),
+    path("", post_list, name="post_list"),
     path("posts/<int:pk>", post_detail, name="post_detail"),
     path("posts/new/", post_create, name="post_create"),
     path('posts/edit/<int:pk>/', post_edit, name='post_edit'),

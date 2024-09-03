@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from rest_framework import serializers
 
 from .forms.posts import PostForm, CommentForm
 from .models import Post
@@ -11,18 +11,14 @@ def basic(request):
     return HttpResponse("Hello, Blog!")
 
 
-class PostSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Post
-        fields = '__all__'
-
-
 def post_list(request):
-    posts = Post.objects.all()
+    post_list = Post.objects.all().order_by('-created_at')
 
-    # data = PostSerializer(posts, many=True).data
-    # return Response(data)
-    return render(request, 'blog/blog_list.html', {'posts': posts})
+    paginator = Paginator(post_list, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'blog/blog_list.html', {'page_obj': page_obj})
 
 
 def post_detail(request, pk):

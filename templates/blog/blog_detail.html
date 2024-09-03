@@ -1,7 +1,7 @@
 {% extends 'blog/base.html' %}
 
 {% block title %}
-    {{ block.super }} | {{ post.title }}
+    {{ block.super }} | {{ post.author.username }}'s Blog
 {% endblock %}
 
 {% block extrahead %}

@@ -105,12 +105,44 @@
         margin-top: 20px;
         text-align: center;
     }
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .pagination a, .pagination span {
+        margin: 0 5px;
+        padding: 8px 16px;
+        text-decoration: none;
+        color: #007bff;
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .pagination a:hover {
+        background-color: #ddd;
+    }
+
+    .pagination .current {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+
+    .pagination .disabled {
+        color: #6c757d;
+        background-color: #f8f9fa;
+        border-color: #ddd;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="container">
-    {% for post in posts %}
+    {% for post in page_obj %}
     <div class="post">
         <h2>{{ post.title }}</h2>
         <p class="post-meta">By <strong>{{ post.author.username }}</strong> on {{ post.created_at|date:"F j, Y" }}</p>
@@ -129,6 +161,28 @@
     {% empty %}
     <p class="no-posts">No posts available.</p>
     {% endfor %}
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% else %}
+            <span class="disabled">&laquo; first</span>
+            <span class="disabled">previous</span>
+        {% endif %}
+
+        <span class="current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% else %}
+            <span class="disabled">next</span>
+            <span class="disabled">last &raquo;</span>
+        {% endif %}
+    </div>
+
     <a href="{% url 'post_create' %}" class="new-post-button">Write a post</a>
 </div>
 {% endblock %}
